@@ -4,7 +4,7 @@ from os.path import isfile, join, splitext
 import json
 
 i = 0
-PATH = "/home/sebastien/Dropbox"
+PATH = "/Users/Diem/Dropbox/Camera\xc2\xa0Uploads/"
 
 class MyHandler(BaseHTTPRequestHandler):
     IMAGE_FILES = []

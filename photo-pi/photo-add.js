@@ -14,7 +14,8 @@
 
 
 var SERVER_URL = "http://localhost:8012";
-var PHOTOS_URL = "../resources/img/";
+//var PHOTOS_URL = "/resources/img/";
+var PHOTOS_URL = "/Users/Diem/Dropbox/Camera Uploads/";
 
 var CSS_CLASS = "imgBorders";
 var DIV_ID = "photos";
@@ -44,11 +45,13 @@ function find_coords()
 {
     var x = 0.;
     var y = 0.;
+    var i = 0;
     do {
        x = Math.random()*1200;
        y = Math.random()*600;
+       i++;
     }
-    while (is_near_old_images(x, y));
+    while (is_near_old_images(x, y) && i < 100);
     return [x, y];
 }
 
@@ -64,10 +67,10 @@ function place_img(id, src)
 {
     $("#"+DIV_ID).prepend('<img class="'+CSS_CLASS+'" id="'+id+'" '+'src="'+PHOTOS_URL+src+'"/>');
     var coords = find_coords();
-    $("#"+id).css('right', coords[0] + "px");
-    $("#"+id).css('top', coords[1] + "px");
+    $("#"+id).css("right", coords[0] + "px");
+    $("#"+id).css("top", coords[1] + "px");
     var angle = MIN_ANGLE + (MAX_ANGLE-MIN_ANGLE)*Math.random();
-    $("#"+id).css({transform: 'rotate(' + angle + 'deg)'});
+    $("#"+id).css("-webkit-transform", 'rotate(' + angle + 'deg)');
     $("#"+id).css('z-index', IMG_Z_INDEX);
     IMG_Z_INDEX++;
     save_coords(coords[0], coords[1]);
@@ -83,8 +86,8 @@ $(document).ready(
                     contentType: "application/json"
                 }).done(function(json) {
                     $.each(json, function(i, src) {
-                        var id = src.split(".")[0];
-                        place_img(id, src);
+                        var escaped_id = src.replace(/ /g, '').replace(/\./g, '');
+                        place_img("img"+escaped_id, src);
                     });
                 });
             }
